@@ -1,10 +1,24 @@
-version: '3.8'
-
 services:
   app:
-    image: 'klintonlee/simples-dental-desafio'
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - 8080:8080
+    env_file:
+      - .env
+    depends_on:
+      - database
+    networks:
+      - my_app
+
+  database:
+    image: 'postgres:latest'
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: construcoes
     networks:
       - my_app
 
