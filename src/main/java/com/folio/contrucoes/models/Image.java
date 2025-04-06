@@ -12,9 +12,11 @@ import lombok.Setter;
 public class Image {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "feed_id", referencedColumnName = "id", nullable = false)
     private Feed feed;
 
