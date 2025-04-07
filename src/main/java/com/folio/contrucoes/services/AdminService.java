@@ -7,6 +7,7 @@ import com.folio.contrucoes.models.Admin;
 import com.folio.contrucoes.repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.Instant;
@@ -15,6 +16,7 @@ import java.util.Objects;
 import static com.folio.contrucoes.services.AuthorizationService.ADMIN_ID;
 import static com.folio.contrucoes.services.AuthorizationService.TOKEN_ID;
 
+@Service
 public class AdminService {
 
     private static final String USUARIO_INICIAL = "admin@admin.com";
