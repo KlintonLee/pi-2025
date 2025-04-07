@@ -17,12 +17,24 @@ import static com.folio.contrucoes.services.AuthorizationService.TOKEN_ID;
 
 public class AdminService {
 
-
+    private static final String USUARIO_INICIAL = "admin@admin.com";
+    private static final String SENHA_INICIAL = "123456";
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     private static final SecureRandom random = new SecureRandom();
 
     @Autowired
     private AdminRepository adminRepository;
+
+    public void criarAdmin() {
+        if (!this.adminRepository.existsById(ADMIN_ID)) {
+            Admin token = new Admin();
+            token.setId(ADMIN_ID);
+            token.setEmail(USUARIO_INICIAL);
+            token.setPassword(encoder.encode(SENHA_INICIAL));
+            token.setCreatedAt(Instant.now());
+            adminRepository.save(token);
+        }
+    }
 
     public String autenticar(String email, String senha) throws Exception {
         return this.adminRepository.findById(ADMIN_ID).map(adm -> {

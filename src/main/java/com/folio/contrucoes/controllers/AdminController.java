@@ -5,11 +5,12 @@ import com.folio.contrucoes.dtos.UsuarioSenhaDto;
 import com.folio.contrucoes.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Objects;
 
-@RequestMapping
+@RestController
 public class AdminController implements AdminApi {
 
     @Autowired
@@ -23,6 +24,12 @@ public class AdminController implements AdminApi {
     @Override
     public ResponseEntity<Object> atualizarSenha(AtualizarSenhaAdminDto dto) {
         adminService.atualizarSenhaAdmin(dto);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("internal/init")
+    public ResponseEntity<Object> initialize() {
+        adminService.criarAdmin();
         return ResponseEntity.noContent().build();
     }
 }
