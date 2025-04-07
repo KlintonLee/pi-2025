@@ -2,6 +2,7 @@ package com.folio.contrucoes.controllers;
 
 import com.folio.contrucoes.dtos.AdicionarImagemDto;
 import com.folio.contrucoes.dtos.CriarFeedDto;
+import com.folio.contrucoes.dtos.FeedResponse;
 import com.folio.contrucoes.models.Feed;
 import com.folio.contrucoes.services.FeedService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 public class FeedController {
@@ -21,8 +23,8 @@ public class FeedController {
     private FeedService feedService;
 
     @GetMapping("/v1/feeds")
-    public String listarFeeds() {
-        return "pong";
+    public ResponseEntity<List<FeedResponse>> listarFeeds() {
+        return ResponseEntity.ok(this.feedService.list());
     }
 
     @PostMapping("/v1/feeds")

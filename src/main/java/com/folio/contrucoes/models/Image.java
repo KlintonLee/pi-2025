@@ -2,11 +2,7 @@ package com.folio.contrucoes.models;
 
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "imagens")
 public class Image {
@@ -23,4 +19,27 @@ public class Image {
     @Column(name = "url", nullable = false)
     private String url;
 
+    public Integer getId() {
+        return this.id;
+    }
+
+    public Feed getFeed() {
+        return this.feed;
+    }
+
+    public String getUrl() {
+        return this.url;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setFeed(Feed feed) {
+        this.feed = feed;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }

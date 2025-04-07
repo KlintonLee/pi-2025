@@ -1,11 +1,16 @@
 package com.folio.contrucoes.services;
 
+import com.folio.contrucoes.dtos.FeedResponse;
+import com.folio.contrucoes.dtos.ImageResponse;
 import com.folio.contrucoes.models.Feed;
 import com.folio.contrucoes.models.Image;
 import com.folio.contrucoes.repository.FeedRepository;
 import com.folio.contrucoes.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FeedService {
@@ -28,5 +33,21 @@ public class FeedService {
             image.setUrl(url);
             this.imageRepository.save(image);
         });
+    }
+
+    public List<FeedResponse> list() {
+        return this.feedRepository.findAll().stream()
+                .map(feed -> {
+                    List<Image> images = this.imageRepository.findAllByFeedId(feed.getId());
+                    return new FeedResponse(
+                            feed.getId(),
+                            feed.getTitle(),
+                            feed.getDescription(),
+                            images.stream()
+                                    .map(img -> new ImageResponse(img.getId(), img.getUrl()))
+                                    .toList()
+                    );
+                })
+                .collect(Collectors.toList());
     }
 }
