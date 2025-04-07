@@ -12,9 +12,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(ApiError.from(ex));
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleGenericException() {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ApiError.from("Ocorreu um erro inesperado, chame o suporte ou tente novamente mais tarde"));
+    }
+
     record ApiError(String message) {
         static ApiError from(NoStackTraceException ex) {
             return new ApiError(ex.getMessage());
+        }
+
+        static ApiError from(String msg) {
+            return new ApiError(msg);
         }
     }
 }
