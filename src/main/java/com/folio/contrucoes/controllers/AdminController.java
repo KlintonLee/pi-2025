@@ -1,6 +1,7 @@
 package com.folio.contrucoes.controllers;
 
 import com.folio.contrucoes.dtos.AtualizarSenhaAdminDto;
+import com.folio.contrucoes.dtos.UsuarioSenhaDto;
 import com.folio.contrucoes.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,11 @@ public class AdminController implements AdminApi {
 
     @Autowired
     private AdminService adminService;
+
+    @Override
+    public ResponseEntity<Object> autenticar(UsuarioSenhaDto dto) throws Exception {
+        return ResponseEntity.ok(adminService.autenticar(dto.email, dto.senha));
+    }
 
     @Override
     public ResponseEntity<Object> atualizarSenha(AtualizarSenhaAdminDto dto) {

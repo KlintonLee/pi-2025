@@ -1,17 +1,33 @@
 package com.folio.contrucoes.controllers;
 
 import com.folio.contrucoes.dtos.AtualizarSenhaAdminDto;
+import com.folio.contrucoes.dtos.UsuarioSenhaDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/v1/admins")
 public interface AdminApi {
+
+
+    @PostMapping(
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Operation(summary = "Atualiza um Feed pelo seu identificador")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Feed atualizado com sucesso"),
+            @ApiResponse(responseCode = "401", description = "Não autorizado"),
+            @ApiResponse(responseCode = "500", description = "Um erro inexperado ocorreu no servidor")
+    })
+    ResponseEntity<Object> autenticar(@RequestBody UsuarioSenhaDto dto) throws Exception;
+
     @PatchMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
