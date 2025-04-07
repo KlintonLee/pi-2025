@@ -1,0 +1,22 @@
+package com.folio.contrucoes.controllers;
+
+import com.folio.contrucoes.dtos.AtualizarSenhaAdminDto;
+import com.folio.contrucoes.services.AdminService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Objects;
+
+@RequestMapping
+public class AdminController implements AdminApi {
+
+    @Autowired
+    private AdminService adminService;
+
+    @Override
+    public ResponseEntity<Object> atualizarSenha(AtualizarSenhaAdminDto dto) {
+        adminService.atualizarSenhaAdmin(dto);
+        return ResponseEntity.noContent().build();
+    }
+}

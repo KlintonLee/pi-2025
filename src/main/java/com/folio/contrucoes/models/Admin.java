@@ -16,4 +16,20 @@ public class Admin {
 
     @Column(name = "password", nullable = false, length = 64)
     private String password;
+
+    public Integer getId() {
+        return this.id;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
