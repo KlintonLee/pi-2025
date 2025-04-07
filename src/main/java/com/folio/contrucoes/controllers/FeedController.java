@@ -14,17 +14,17 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-public class FeedController {
+public class FeedController implements FeedApi {
 
     @Autowired
     private FeedService feedService;
 
-    @GetMapping("/v1/feeds")
+    @Override
     public ResponseEntity<List<FeedResponse>> listarFeeds() {
         return ResponseEntity.ok(this.feedService.list());
     }
 
-    @PostMapping("/v1/feeds")
+    @Override
     public ResponseEntity<Object> criarFeed(@RequestBody CriarAtualizarFeedDto dto) {
         Feed feed = new Feed();
         if (dto.titulo == null || dto.titulo.isEmpty()) {
@@ -41,7 +41,7 @@ public class FeedController {
         return ResponseEntity.created(URI.create("/v1/feeds/" + id)).build();
     }
 
-    @PutMapping("/v1/feeds/{idFeed}")
+    @Override
     public ResponseEntity<Object> atualizarFeed(
             @PathVariable Integer idFeed,
             @RequestBody CriarAtualizarFeedDto dto) {
@@ -58,13 +58,13 @@ public class FeedController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/v1/feeds/{idFeed}")
+    @Override
     public ResponseEntity<Void> deletarFeed(@PathVariable Integer idFeed) {
         this.feedService.delete(idFeed);
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/v1/feeds/imagens")
+    @Override
     public ResponseEntity<Object> criarImagem(@RequestBody AdicionarImagemDto dto) {
         if (dto.idFeed == null) {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("O id do feed não pode ser nulo");
@@ -79,7 +79,7 @@ public class FeedController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/v1/feeds/imagens/{idFeed}")
+    @Override
     public ResponseEntity<Void> deletarImagem(@PathVariable Integer idFeed) {
         this.feedService.deleteImagem(idFeed);
         return ResponseEntity.noContent().build();
