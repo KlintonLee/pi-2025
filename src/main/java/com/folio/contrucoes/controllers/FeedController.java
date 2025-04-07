@@ -41,21 +41,6 @@ public class FeedController {
         return ResponseEntity.created(URI.create("/v1/feeds/" + id)).build();
     }
 
-    @PostMapping("/v1/feeds/imagens")
-    public ResponseEntity<Object> criarImagem(@RequestBody AdicionarImagemDto dto) {
-        if (dto.idFeed == null) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("O id do feed não pode ser nulo");
-        }
-
-        if (dto.url == null || dto.url.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("A url da imagem não pode ser nula ou vazia");
-        }
-
-        this.feedService.updateImagem(dto.idFeed, dto.url);
-
-        return ResponseEntity.noContent().build();
-    }
-
     @PutMapping("/v1/feeds/{idFeed}")
     public ResponseEntity<Object> atualizarFeed(
             @PathVariable Integer idFeed,
@@ -76,6 +61,27 @@ public class FeedController {
     @DeleteMapping("/v1/feeds/{idFeed}")
     public ResponseEntity<Void> deletarFeed(@PathVariable Integer idFeed) {
         this.feedService.delete(idFeed);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/v1/feeds/imagens")
+    public ResponseEntity<Object> criarImagem(@RequestBody AdicionarImagemDto dto) {
+        if (dto.idFeed == null) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("O id do feed não pode ser nulo");
+        }
+
+        if (dto.url == null || dto.url.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("A url da imagem não pode ser nula ou vazia");
+        }
+
+        this.feedService.addImagem(dto.idFeed, dto.url);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/v1/feeds/imagens/{idFeed}")
+    public ResponseEntity<Void> deletarImagem(@PathVariable Integer idFeed) {
+        this.feedService.deleteImagem(idFeed);
         return ResponseEntity.noContent().build();
     }
 }

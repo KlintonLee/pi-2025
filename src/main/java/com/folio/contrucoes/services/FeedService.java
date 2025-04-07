@@ -27,15 +27,6 @@ public class FeedService {
         return savedFeed.getId();
     }
 
-    public void updateImagem(Integer idFeed, String url) {
-        this.feedRepository.findById(idFeed).ifPresent(feed -> {
-            Image image = new Image();
-            image.setFeed(feed);
-            image.setUrl(url);
-            this.imageRepository.save(image);
-        });
-    }
-
     public List<FeedResponse> list() {
         return this.feedRepository.findAll().stream()
                 .map(feed -> {
@@ -64,6 +55,21 @@ public class FeedService {
         this.feedRepository.findById(feedId).ifPresent(feedOutput -> {
             this.imageRepository.deleteAllByFeedId(feedOutput.getId());
             this.feedRepository.delete(feedOutput);
+        });
+    }
+
+    public void addImagem(Integer idFeed, String url) {
+        this.feedRepository.findById(idFeed).ifPresent(feed -> {
+            Image image = new Image();
+            image.setFeed(feed);
+            image.setUrl(url);
+            this.imageRepository.save(image);
+        });
+    }
+
+    public void deleteImagem(Integer idImagem) {
+        this.imageRepository.findById(idImagem).ifPresent(imageOutput -> {
+            this.imageRepository.delete(imageOutput);
         });
     }
 }
