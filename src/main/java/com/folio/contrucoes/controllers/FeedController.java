@@ -1,17 +1,14 @@
 package com.folio.contrucoes.controllers;
 
 import com.folio.contrucoes.dtos.AdicionarImagemDto;
-import com.folio.contrucoes.dtos.CriarFeedDto;
+import com.folio.contrucoes.dtos.CriarAtualizarFeedDto;
 import com.folio.contrucoes.dtos.FeedResponse;
 import com.folio.contrucoes.models.Feed;
 import com.folio.contrucoes.services.FeedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
@@ -28,7 +25,7 @@ public class FeedController {
     }
 
     @PostMapping("/v1/feeds")
-    public ResponseEntity<Object> criarFeed(@RequestBody CriarFeedDto dto) {
+    public ResponseEntity<Object> criarFeed(@RequestBody CriarAtualizarFeedDto dto) {
         Feed feed = new Feed();
         if (dto.titulo == null || dto.titulo.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Título não pode ser nulo ou vazio");
@@ -55,6 +52,23 @@ public class FeedController {
         }
 
         this.feedService.updateImagem(dto.idFeed, dto.url);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/v1/feeds/{idFeed}")
+    public ResponseEntity<Object> atualizarFeed(
+            @PathVariable Integer idFeed,
+            @RequestBody CriarAtualizarFeedDto dto) {
+        if (dto.titulo == null || dto.titulo.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Título não pode ser nulo ou vazio");
+        }
+
+        if (dto.descricao == null || dto.descricao.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Descrição não pode ser nulo ou vazio");
+        }
+        dto.id = idFeed;
+        this.feedService.update(dto);
 
         return ResponseEntity.noContent().build();
     }

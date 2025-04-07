@@ -1,5 +1,6 @@
 package com.folio.contrucoes.services;
 
+import com.folio.contrucoes.dtos.CriarAtualizarFeedDto;
 import com.folio.contrucoes.dtos.FeedResponse;
 import com.folio.contrucoes.dtos.ImageResponse;
 import com.folio.contrucoes.models.Feed;
@@ -49,5 +50,13 @@ public class FeedService {
                     );
                 })
                 .collect(Collectors.toList());
+    }
+
+    public void update(CriarAtualizarFeedDto feedDto) {
+        this.feedRepository.findById(feedDto.id).ifPresent(feedOutput -> {
+            feedOutput.setTitle(feedDto.titulo);
+            feedOutput.setDescription(feedDto.descricao);
+            this.feedRepository.save(feedOutput);
+        });
     }
 }
