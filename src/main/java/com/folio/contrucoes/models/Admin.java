@@ -1,6 +1,7 @@
 package com.folio.contrucoes.models;
 
 import jakarta.persistence.*;
+import java.time.Instant;
 
 @Entity
 @Table(name = "admins")
@@ -15,6 +16,9 @@ public class Admin {
 
     @Column(name = "password", nullable = false, length = 64)
     private String password;
+
+    @Column(name = "created_at", nullable = false, length = 64)
+    private Instant createdAt;
 
     public Integer getId() {
         return this.id;
@@ -38,5 +42,13 @@ public class Admin {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 }

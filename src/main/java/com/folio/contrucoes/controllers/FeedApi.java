@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public interface FeedApi {
             @ApiResponse(responseCode = "422", description = "Um erro de validação foi lançado"),
             @ApiResponse(responseCode = "500", description = "Um erro inexperado ocorreu no servidor")
     })
-    ResponseEntity<Object> criarFeed(@RequestBody CriarAtualizarFeedDto dto);
+    ResponseEntity<Object> criarFeed(@RequestBody CriarAtualizarFeedDto dto, HttpServletRequest request);
 
     @GetMapping
     @Operation(summary = "Lista todos feeds")
@@ -37,7 +38,7 @@ public interface FeedApi {
             @ApiResponse(responseCode = "422", description = "Um erro de validação dos parâmetros foi lançado"),
             @ApiResponse(responseCode = "500", description = "Um erro inexperado ocorreu no servidor"),
     })
-    ResponseEntity<List<FeedResponse>> listarFeeds();
+    ResponseEntity<List<FeedResponse>> listarFeeds(HttpServletRequest request);
 
     @PutMapping(
             value = "{id}",
@@ -51,7 +52,7 @@ public interface FeedApi {
             @ApiResponse(responseCode = "422", description = "Um erro de validação foi lançado"),
             @ApiResponse(responseCode = "500", description = "Um erro inexperado ocorreu no servidor")
     })
-    ResponseEntity<Object> atualizarFeed(@PathVariable Integer id, @RequestBody CriarAtualizarFeedDto dto);
+    ResponseEntity<Object> atualizarFeed(@PathVariable Integer id, @RequestBody CriarAtualizarFeedDto dto, HttpServletRequest request);
 
     @DeleteMapping(value = "{id}")
     @Operation(summary = "Deleta um feed pelo seu identificador")
@@ -61,7 +62,7 @@ public interface FeedApi {
             @ApiResponse(responseCode = "404", description = "Feed não localizado"),
             @ApiResponse(responseCode = "500", description = "Um erro inexperado ocorreu no servidor")
     })
-    ResponseEntity<Void> deletarFeed(@PathVariable Integer id);
+    ResponseEntity<Void> deletarFeed(@PathVariable Integer id, HttpServletRequest request);
 
     @PostMapping(
             value = "imagens",
@@ -74,7 +75,7 @@ public interface FeedApi {
             @ApiResponse(responseCode = "422", description = "Um erro de validação foi lançado"),
             @ApiResponse(responseCode = "500", description = "Um erro inexperado ocorreu no servidor")
     })
-    ResponseEntity<Object> criarImagem(@RequestBody AdicionarImagemDto dto);
+    ResponseEntity<Object> criarImagem(@RequestBody AdicionarImagemDto dto, HttpServletRequest request);
 
     @DeleteMapping(value = "imagens/{id}")
     @Operation(summary = "Deleta uma imagem do feed pelo seu identificador")
@@ -84,5 +85,5 @@ public interface FeedApi {
             @ApiResponse(responseCode = "404", description = "Feed não localizado"),
             @ApiResponse(responseCode = "500", description = "Um erro inexperado ocorreu no servidor")
     })
-    ResponseEntity<Void> deletarImagem(@PathVariable Integer id);
+    ResponseEntity<Void> deletarImagem(@PathVariable Integer id, HttpServletRequest request);
 }

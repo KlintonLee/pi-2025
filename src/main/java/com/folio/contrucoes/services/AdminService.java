@@ -9,12 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.security.SecureRandom;
+import java.time.Instant;
 import java.util.Objects;
+
+import static com.folio.contrucoes.services.AuthorizationService.ADMIN_ID;
+import static com.folio.contrucoes.services.AuthorizationService.TOKEN_ID;
 
 public class AdminService {
 
-    private static final Integer ADMIN_ID = 1;
-    private static final Integer TOKEN_ID = 2;
+
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     private static final SecureRandom random = new SecureRandom();
 
@@ -35,6 +38,7 @@ public class AdminService {
             token.setId(TOKEN_ID);
             token.setEmail(adm.getEmail());
             token.setPassword(gerarHashAleatorio());
+            token.setCreatedAt(Instant.now());
             adminRepository.save(token);
             return token.getPassword();
         }).orElseThrow(Exception::new);
