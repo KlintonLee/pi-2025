@@ -3,6 +3,7 @@ package com.folio.contrucoes.services;
 import com.folio.contrucoes.dtos.CriarAtualizarFeedDto;
 import com.folio.contrucoes.dtos.FeedResponse;
 import com.folio.contrucoes.dtos.ImageResponse;
+import com.folio.contrucoes.exception.UnprocessableEntityException;
 import com.folio.contrucoes.models.Feed;
 import com.folio.contrucoes.models.Image;
 import com.folio.contrucoes.repository.FeedRepository;
@@ -22,7 +23,17 @@ public class FeedService {
     @Autowired
     private ImageRepository imageRepository;
 
-    public Integer create(Feed feed) {
+    public Integer create(CriarAtualizarFeedDto dto) {
+        Feed feed = new Feed();
+        if (dto.titulo == null || dto.titulo.isEmpty()) {
+            throw new UnprocessableEntityException("Título não pode ser nulo ou vazio");
+        }
+        feed.setTitle(dto.titulo);
+
+        if (dto.descricao == null || dto.descricao.isEmpty()) {
+            throw new UnprocessableEntityException("Descrição não pode ser nulo ou vazio");
+        }
+        feed.setDescription(dto.descricao);
         Feed savedFeed = feedRepository.save(feed);
         return savedFeed.getId();
     }
@@ -44,6 +55,14 @@ public class FeedService {
     }
 
     public void update(CriarAtualizarFeedDto feedDto) {
+        if (feedDto.titulo == null || feedDto.titulo.isEmpty()) {
+            throw new UnprocessableEntityException("Título não pode ser nulo ou vazio");
+        }
+
+        if (feedDto.descricao == null || feedDto.descricao.isEmpty()) {
+            throw new UnprocessableEntityException("Descrição não pode ser nulo ou vazio");
+        }
+
         this.feedRepository.findById(feedDto.id).ifPresent(feedOutput -> {
             feedOutput.setTitle(feedDto.titulo);
             feedOutput.setDescription(feedDto.descricao);
@@ -59,6 +78,14 @@ public class FeedService {
     }
 
     public void addImagem(Integer idFeed, String url) {
+        if (idFeed == null) {
+            throw new UnprocessableEntityException("O id do feed não pode ser nulo");
+        }
+
+        if (url == null || url.isEmpty()) {
+            throw new UnprocessableEntityException("A url da imagem não pode ser nula ou vazia");
+        }
+
         this.feedRepository.findById(idFeed).ifPresent(feed -> {
             Image image = new Image();
             image.setFeed(feed);
