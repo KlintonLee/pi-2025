@@ -59,4 +59,11 @@ public class FeedService {
             this.feedRepository.save(feedOutput);
         });
     }
+
+    public void delete(Integer feedId) {
+        this.feedRepository.findById(feedId).ifPresent(feedOutput -> {
+            this.imageRepository.deleteAllByFeedId(feedOutput.getId());
+            this.feedRepository.delete(feedOutput);
+        });
+    }
 }

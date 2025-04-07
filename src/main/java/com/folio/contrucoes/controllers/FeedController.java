@@ -72,4 +72,10 @@ public class FeedController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/v1/feeds/{idFeed}")
+    public ResponseEntity<Void> deletarFeed(@PathVariable Integer idFeed) {
+        this.feedService.delete(idFeed);
+        return ResponseEntity.noContent().build();
+    }
 }
