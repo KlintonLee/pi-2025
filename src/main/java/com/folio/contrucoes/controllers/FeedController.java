@@ -1,5 +1,6 @@
 package com.folio.contrucoes.controllers;
 
+import com.folio.contrucoes.dtos.AdicionarImagemDto;
 import com.folio.contrucoes.dtos.CriarFeedDto;
 import com.folio.contrucoes.models.Feed;
 import com.folio.contrucoes.services.FeedService;
@@ -39,5 +40,20 @@ public class FeedController {
         Integer id = feedService.create(feed);
 
         return ResponseEntity.created(URI.create("/v1/feeds/" + id)).build();
+    }
+
+    @PostMapping("/v1/feeds/imagens")
+    public ResponseEntity<Object> criarImagem(@RequestBody AdicionarImagemDto dto) {
+        if (dto.idFeed == null) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("O id do feed não pode ser nulo");
+        }
+
+        if (dto.url == null || dto.url.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("A url da imagem não pode ser nula ou vazia");
+        }
+
+        this.feedService.updateImagem(dto.idFeed, dto.url);
+
+        return ResponseEntity.noContent().build();
     }
 }
