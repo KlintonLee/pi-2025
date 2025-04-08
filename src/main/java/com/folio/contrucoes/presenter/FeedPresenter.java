@@ -20,4 +20,11 @@ public interface FeedPresenter {
                         .toList()
         );
     }
+
+    static IdResponse present(Integer id) {
+        return new IdResponse(id);
+    }
+
+    record IdResponse(Integer id) {
+    }
 }

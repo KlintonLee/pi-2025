@@ -42,7 +42,7 @@ public interface FeedApi {
     ResponseEntity<List<FeedResponse>> listarFeeds(@RequestHeader(value = "x-auth-token", required = false) String token);
 
     @PutMapping(
-            value = "{id}",
+            value = "{idFeed}",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     @Operation(summary = "Atualiza um Feed pelo seu identificador")
@@ -54,7 +54,7 @@ public interface FeedApi {
             @ApiResponse(responseCode = "500", description = "Um erro inexperado ocorreu no servidor")
     })
     ResponseEntity<Object> atualizarFeed(@RequestHeader(value = "x-auth-token", required = false) String token,
-                                         @PathVariable Integer id,
+                                         @PathVariable Integer idFeed,
                                          @RequestBody CriarAtualizarFeedDto dto);
 
     @DeleteMapping("{idFeed}")

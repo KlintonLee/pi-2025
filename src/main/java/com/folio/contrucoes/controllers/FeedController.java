@@ -3,6 +3,7 @@ package com.folio.contrucoes.controllers;
 import com.folio.contrucoes.dtos.AdicionarImagemDto;
 import com.folio.contrucoes.dtos.CriarAtualizarFeedDto;
 import com.folio.contrucoes.dtos.FeedResponse;
+import com.folio.contrucoes.presenter.FeedPresenter;
 import com.folio.contrucoes.services.AuthorizationService;
 import com.folio.contrucoes.services.FeedService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class FeedController implements FeedApi {
         authorizationService.autenticar(token);
         Integer id = feedService.create(dto);
 
-        return ResponseEntity.created(URI.create("/v1/feeds/" + id)).build();
+        return ResponseEntity.created(URI.create("/v1/feeds/" + id)).body(FeedPresenter.present(id));
     }
 
     @Override
@@ -42,7 +43,7 @@ public class FeedController implements FeedApi {
         dto.id = idFeed;
         this.feedService.update(dto);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(FeedPresenter.present(idFeed));
     }
 
     @Override
