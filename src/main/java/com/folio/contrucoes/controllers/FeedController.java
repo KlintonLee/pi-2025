@@ -25,7 +25,6 @@ public class FeedController implements FeedApi {
 
     @Override
     public ResponseEntity<List<FeedResponse>> listarFeeds(String token) {
-        authorizationService.autenticar(token);
         return ResponseEntity.ok(this.feedService.list());
     }
 
