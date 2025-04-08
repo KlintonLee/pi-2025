@@ -6,11 +6,11 @@ import com.folio.contrucoes.exception.UnprocessableEntityException;
 import com.folio.contrucoes.models.Admin;
 import com.folio.contrucoes.repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.Instant;
+import java.util.Base64;
 import java.util.Objects;
 
 import static com.folio.contrucoes.services.AuthorizationService.ADMIN_ID;
@@ -21,7 +21,6 @@ public class AdminService {
 
     private static final String USUARIO_INICIAL = "admin@admin.com";
     private static final String SENHA_INICIAL = "123456";
-    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     private static final SecureRandom random = new SecureRandom();
 
     @Autowired
@@ -32,7 +31,7 @@ public class AdminService {
             Admin token = new Admin();
             token.setId(ADMIN_ID);
             token.setEmail(USUARIO_INICIAL);
-            token.setPassword(encoder.encode(SENHA_INICIAL));
+            token.setPassword(encoder(SENHA_INICIAL));
             token.setCreatedAt(Instant.now());
             adminRepository.save(token);
         }
@@ -44,13 +43,13 @@ public class AdminService {
                 throw new UnauthorizedException("Usuario ou senha inválidos");
             }
 
-            if (!Objects.equals(encoder.encode(senha), adm.getPassword())) {
+            if (!Objects.equals(encoder(senha), adm.getPassword())) {
                 throw new UnauthorizedException("Usuario ou senha inválidos");
             }
 
             Admin token = new Admin();
             token.setId(TOKEN_ID);
-            token.setEmail(adm.getEmail());
+            token.setEmail(encoder(senha));
             token.setPassword(gerarHashAleatorio());
             token.setCreatedAt(Instant.now());
             adminRepository.save(token);
@@ -72,9 +71,13 @@ public class AdminService {
         }
 
         this.adminRepository.findById(ADMIN_ID).ifPresent(admin -> {
-            admin.setPassword(encoder.encode(atualizarSenhaAdminDto.novaSenha));
+            admin.setPassword(encoder(atualizarSenhaAdminDto.novaSenha));
             this.adminRepository.save(admin);
         });
+    }
+
+    private static String encoder(String input) {
+        return Base64.getEncoder().encodeToString(input.getBytes());
     }
 
     public String gerarHashAleatorio() {
