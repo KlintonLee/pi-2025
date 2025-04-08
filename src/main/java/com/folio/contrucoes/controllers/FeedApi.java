@@ -57,7 +57,7 @@ public interface FeedApi {
                                          @PathVariable Integer id,
                                          @RequestBody CriarAtualizarFeedDto dto);
 
-    @DeleteMapping(value = "{id}")
+    @DeleteMapping("{idFeed}")
     @Operation(summary = "Deleta um feed pelo seu identificador")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Feed deletado com sucesso"),
@@ -66,7 +66,7 @@ public interface FeedApi {
             @ApiResponse(responseCode = "500", description = "Um erro inexperado ocorreu no servidor")
     })
     ResponseEntity<Void> deletarFeed(@RequestHeader(value = "x-auth-token", required = false) String token,
-                                     @PathVariable Integer id);
+                                     @PathVariable("idFeed") Integer idFeed);
 
     @PostMapping(
             value = "imagens",
