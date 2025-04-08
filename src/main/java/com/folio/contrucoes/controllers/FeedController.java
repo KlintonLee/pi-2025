@@ -5,7 +5,6 @@ import com.folio.contrucoes.dtos.CriarAtualizarFeedDto;
 import com.folio.contrucoes.dtos.FeedResponse;
 import com.folio.contrucoes.services.AuthorizationService;
 import com.folio.contrucoes.services.FeedService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,22 +22,22 @@ public class FeedController implements FeedApi {
     private AuthorizationService authorizationService;
 
     @Override
-    public ResponseEntity<List<FeedResponse>> listarFeeds(HttpServletRequest request) {
-        authorizationService.autenticar(request.getHeader("x-auth-token"));
+    public ResponseEntity<List<FeedResponse>> listarFeeds(String token) {
+        authorizationService.autenticar(token);
         return ResponseEntity.ok(this.feedService.list());
     }
 
     @Override
-    public ResponseEntity<Object> criarFeed(@RequestBody CriarAtualizarFeedDto dto, HttpServletRequest request) {
-        authorizationService.autenticar(request.getHeader("x-auth-token"));
+    public ResponseEntity<Object> criarFeed(String token, CriarAtualizarFeedDto dto) {
+        authorizationService.autenticar(token);
         Integer id = feedService.create(dto);
 
         return ResponseEntity.created(URI.create("/v1/feeds/" + id)).build();
     }
 
     @Override
-    public ResponseEntity<Object> atualizarFeed(@PathVariable Integer idFeed, @RequestBody CriarAtualizarFeedDto dto, HttpServletRequest request) {
-        authorizationService.autenticar(request.getHeader("x-auth-token"));
+    public ResponseEntity<Object> atualizarFeed(String token, Integer idFeed, CriarAtualizarFeedDto dto) {
+        authorizationService.autenticar(token);
         dto.id = idFeed;
         this.feedService.update(dto);
 
@@ -46,23 +45,23 @@ public class FeedController implements FeedApi {
     }
 
     @Override
-    public ResponseEntity<Void> deletarFeed(@PathVariable Integer idFeed, HttpServletRequest request) {
-        authorizationService.autenticar(request.getHeader("x-auth-token"));
+    public ResponseEntity<Void> deletarFeed(String token, Integer idFeed) {
+        authorizationService.autenticar(token);
         this.feedService.delete(idFeed);
         return ResponseEntity.noContent().build();
     }
 
     @Override
-    public ResponseEntity<Object> criarImagem(@RequestBody AdicionarImagemDto dto, HttpServletRequest request) {
-        authorizationService.autenticar(request.getHeader("x-auth-token"));
+    public ResponseEntity<Object> criarImagem(String token, AdicionarImagemDto dto) {
+        authorizationService.autenticar(token);
         this.feedService.addImagem(dto.idFeed, dto.url);
 
         return ResponseEntity.noContent().build();
     }
 
     @Override
-    public ResponseEntity<Void> deletarImagem(@PathVariable Integer idFeed, HttpServletRequest request) {
-        authorizationService.autenticar(request.getHeader("x-auth-token"));
+    public ResponseEntity<Void> deletarImagem(String token, Integer idFeed) {
+        authorizationService.autenticar(token);
         this.feedService.deleteImagem(idFeed);
         return ResponseEntity.noContent().build();
     }

@@ -28,7 +28,8 @@ public interface FeedApi {
             @ApiResponse(responseCode = "422", description = "Um erro de validação foi lançado"),
             @ApiResponse(responseCode = "500", description = "Um erro inexperado ocorreu no servidor")
     })
-    ResponseEntity<Object> criarFeed(@RequestBody CriarAtualizarFeedDto dto, HttpServletRequest request);
+    ResponseEntity<Object> criarFeed(@RequestHeader(value = "x-auth-token", required = false) String token,
+                                     @RequestBody CriarAtualizarFeedDto dto);
 
     @GetMapping
     @Operation(summary = "Lista todos feeds")
@@ -38,7 +39,7 @@ public interface FeedApi {
             @ApiResponse(responseCode = "422", description = "Um erro de validação dos parâmetros foi lançado"),
             @ApiResponse(responseCode = "500", description = "Um erro inexperado ocorreu no servidor"),
     })
-    ResponseEntity<List<FeedResponse>> listarFeeds(HttpServletRequest request);
+    ResponseEntity<List<FeedResponse>> listarFeeds(@RequestHeader(value = "x-auth-token", required = false) String token);
 
     @PutMapping(
             value = "{id}",
@@ -52,7 +53,9 @@ public interface FeedApi {
             @ApiResponse(responseCode = "422", description = "Um erro de validação foi lançado"),
             @ApiResponse(responseCode = "500", description = "Um erro inexperado ocorreu no servidor")
     })
-    ResponseEntity<Object> atualizarFeed(@PathVariable Integer id, @RequestBody CriarAtualizarFeedDto dto, HttpServletRequest request);
+    ResponseEntity<Object> atualizarFeed(@RequestHeader(value = "x-auth-token", required = false) String token,
+                                         @PathVariable Integer id,
+                                         @RequestBody CriarAtualizarFeedDto dto);
 
     @DeleteMapping(value = "{id}")
     @Operation(summary = "Deleta um feed pelo seu identificador")
@@ -62,7 +65,8 @@ public interface FeedApi {
             @ApiResponse(responseCode = "404", description = "Feed não localizado"),
             @ApiResponse(responseCode = "500", description = "Um erro inexperado ocorreu no servidor")
     })
-    ResponseEntity<Void> deletarFeed(@PathVariable Integer id, HttpServletRequest request);
+    ResponseEntity<Void> deletarFeed(@RequestHeader(value = "x-auth-token", required = false) String token,
+                                     @PathVariable Integer id);
 
     @PostMapping(
             value = "imagens",
@@ -75,7 +79,8 @@ public interface FeedApi {
             @ApiResponse(responseCode = "422", description = "Um erro de validação foi lançado"),
             @ApiResponse(responseCode = "500", description = "Um erro inexperado ocorreu no servidor")
     })
-    ResponseEntity<Object> criarImagem(@RequestBody AdicionarImagemDto dto, HttpServletRequest request);
+    ResponseEntity<Object> criarImagem(@RequestHeader(value = "x-auth-token", required = false) String token,
+                                       @RequestBody AdicionarImagemDto dto);
 
     @DeleteMapping(value = "imagens/{id}")
     @Operation(summary = "Deleta uma imagem do feed pelo seu identificador")
@@ -85,5 +90,6 @@ public interface FeedApi {
             @ApiResponse(responseCode = "404", description = "Feed não localizado"),
             @ApiResponse(responseCode = "500", description = "Um erro inexperado ocorreu no servidor")
     })
-    ResponseEntity<Void> deletarImagem(@PathVariable Integer id, HttpServletRequest request);
+    ResponseEntity<Void> deletarImagem(@RequestHeader(value = "x-auth-token", required = false) String token,
+                                       @PathVariable Integer id);
 }
