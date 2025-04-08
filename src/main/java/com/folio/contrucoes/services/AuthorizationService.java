@@ -18,7 +18,7 @@ public class AuthorizationService {
     private AdminRepository adminRepository;
 
     public void autenticar(String token) {
-        Admin admToken = adminRepository.findByToken(token)
+        Admin admToken = adminRepository.findByPassword(token)
                 .orElseThrow(() -> new UnauthorizedException("Token inválido"));
         Instant now = Instant.now();
 
